@@ -16,7 +16,7 @@ partial class GUIClock : Form
 		timer.Start();
 		culture_jp = new CultureInfo("ja-jp", false);
 		culture_jp.DateTimeFormat.Calendar = new JapaneseCalendar();
-		this.ClientSize = new Size(300, 200);
+		this.ClientSize = new Size(350, 200);
 		this.Text = "詰め込み時計";
 		this.FormBorderStyle = FormBorderStyle.FixedSingle;
 		this.Load += (object sender, EventArgs e) => {
@@ -78,17 +78,17 @@ partial class GUIClock
 	
 	void InitialControls()
 	{
-		lb_clock.Text = "23:59";
+		lb_clock.Text = "23:59_";
 //		lb_clock.BackColor = Color.Orange;
 		lb_clock.Font = new Font(lb_font, 48);
-		lb_clock.Size = new Size(230, 80);
+		lb_clock.Size = new Size(280, 80);
 		lb_clock.Location = new Point(80, 10);
 
 		lb_second.Text = "00";
-//		lb_second.BackColor = Color.Orange;
-		lb_second.Font = new Font(lb_font, 25);
-		lb_second.Size = new Size(80, 40);
-		lb_second.Location = new Point(255, 45);
+//		lb_second.BackColor = Color.Pink;
+		lb_second.Font = new Font(lb_font, 35);
+		lb_second.Size = new Size(75, 60);
+		lb_second.Location = new Point(265, 15);
 
 		lb_am_pm.Text = "AM";
 //		lb_am_pm.BackColor = Color.Orange;
@@ -97,7 +97,7 @@ partial class GUIClock
 		lb_am_pm.Location = new Point(0, 10);
 
 		lb_line.BackColor = Color.Black;
-		lb_line.Size = new Size(260, 5);
+		lb_line.Size = new Size(310, 5);
 		lb_line.Location = new Point(20, 90);
 
 		lb_ad.Text = "2025";
@@ -115,7 +115,7 @@ partial class GUIClock
 		lb_date.Text = "12/31";
 //		lb_date.BackColor = Color.Orange;
 		lb_date.Font = new Font(lb_font, 48);
-		lb_date.Size = new Size(200, 70);
+		lb_date.Size = new Size(235, 70);
 		lb_date.Location = new Point(120, 90);
 
 		lb_day_of_week.Text = "日曜日";
@@ -137,13 +137,19 @@ partial class GUIClock
 	void update_clock(object sender, EventArgs e)
 	{
 		DateTime time = GetTokyoTime();
-//		lb_clock.Text 		= time.Hour + ":" + time.Minute;
-		lb_clock.Text 		= time.ToString("HH:mm");
+		if(time.Hour > 12)
+		{
+			lb_clock.Text = (time.Hour - 12).ToString("D2") + ":" + time.Minute.ToString() + "＿";
+		}
+		else
+		{
+			lb_clock.Text = time.Hour.ToString("D2") + ":" + time.Minute.ToString() + "＿";
+		}
 		lb_second.Text		= time.ToString("ss");
 		lb_am_pm.Text 		= time.Hour >= 12 ? "PM" : "AM";
 		lb_ad.Text 			= time.Year.ToString();
 		lb_era_name.Text	= time.ToString("ggy年", culture_jp);
-		lb_date.Text 		= time.Month + "/" + time.Day;
+		lb_date.Text 		= time.Month + "月" + time.Day + "日";
 		lb_day_of_week.Text = day_of_week[(int)time.DayOfWeek];
 
 		Invalidate();
